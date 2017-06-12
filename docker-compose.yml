@@ -1,0 +1,45 @@
+version: '3'
+services:
+  recommendation-service:
+     image: predictionio
+     container_name: predictionio-container
+     environment:
+      - "-v 'pwd':/docker"
+      - "--rm"
+      - "name prediction"
+     ports:
+      - 9000:9000
+      - 8000:8000
+      - 7070:7070
+      - 9200:9200
+     stdin_open: true
+     tty: true
+  analytic-service:
+     image: ase/analytic-service-docker
+     container_name: analytic-service-container
+     environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+     ports:
+      - 8080:8080
+  notification-service:
+     image: ase/notification-service-docker
+     container_name: notification-service-container
+     environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+     ports:
+      - 8070:8070
+  simulation-service:
+     image: ase/simulation-service-docker
+     container_name: simulation-service-container
+     environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+     ports:
+      - 8060:8060
+  kibana:
+    image: anapsix/kibana:4.1
+    container_name: kibana-container
+    environment:
+      ELASTICSEARCH_URL: http://192.168.99.100:9200
+      XPACK_SECURITY_ENABLED: "false"
+    ports:
+      - 5601:5601

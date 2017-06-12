@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Log-based e-commerce recommendation system</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"  />
+	<!-- Custom CSS -->
+<link th:href="@{/styles.css}" rel="stylesheet" type="text/css"  />
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">Home</a>
+			<a class="navbar-brand" href="http://192.168.99.100:8060">Simulation service</a>
+			<a class="navbar-brand" href="neweventtype">Define new event type</a>
+			<a class="navbar-brand" href="newrecommenderevent">Insert new event</a>
+			<a class="navbar-brand" href="eventtypes">Get defined event types</a>
+			<a class="navbar-brand" href="getrecommendations">Get recommendations</a>
+			<a class="navbar-brand" href="http://192.168.99.100:5601">Kibana</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+	<h1>Log-based e-commerce recommendation system</h1>
+   <h3>Create a new type of event</h3>
+
+<ul  class="nav nav-pills">
+			<li class="active">
+        <a  href="#only-log" data-toggle="tab">Event for logging only</a>
+			</li>
+			<li><a href="#recommender" data-toggle="tab">Recommender event</a>
+			</li>
+		</ul>
+
+	<div class="tab-content clearfix">
+		<div class="tab-pane active" id="only-log">
+          <h3>Event only for logging purposes</h3>
+          <form action="#"  method="POST"
+      th:action="@{/inserteventtype}" th:object="${neweventtype}" class="form-horizontal">
+
+  <div class="form-group">
+        <label for="newindex">Create new index</label>
+        <input type="checkbox" id="newindex" />
+        </div>
+        
+         <div class="form-group" id="newindexdiv" style="display:none">
+        <label for="index">New Index Name</label>
+        <input class="form-control" id="index" type="text" th:field="*{newIndex}" />
+        </div>
+        <div class="form-group" id="selectindexdiv">
+        <label for="indices">Use existing index</label>
+        <select class="form-control" id="indices" th:field="*{oldIndex}">
+         <option th:each="type : ${indices}" 
+          th:value="${type}" 
+          th:text="${type}"></option>
+         </select>
+        </div>
+          <div class="form-group">
+        <label for="mapping">Mapping Name</label>
+        <input class="form-control" id="mapping" type="text" th:field="*{mapping}" />
+        </div>
+        
+       <div class="form-group" style="position:relative">
+        <label for="properties">Properties in JSON format:</label>
+        <textarea name="prop" class="form-control" id="properties" rows="10" cols="50" th:field="*{properties}" >
+        </textarea>
+        <div style="position:absolute;left:120%;top:0">
+        <p>Example</p>
+        <pre class='mapping'>{"properties":{"name":{"type":"integer"}}}</pre>
+        </div>
+        </div>
+ 
+
+
+    <!--  Submit button -->
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-success">Create</button>
+        </div>
+    </div>
+</form>
+				</div>
+	
+
+
+
+		<div class="tab-pane" id="recommender">
+          <h3>Event for recommendation</h3>
+          <form action="#"  method="POST"
+      th:action="@{/insertrecommendereventtype}" th:object="${neweventtype}" class="form-horizontal">
+
+  
+          <div class="form-group">
+        <label for="mapping">Mapping Name</label>
+        <input class="form-control" id="mapping" type="text" th:field="*{mapping}" />
+        </div>
+        
+       <div class="form-group" style="position:relative">
+        <label for="properties">Properties in JSON format:</label>
+        <textarea name="prop" class="form-control" id="properties" rows="10" cols="50" th:field="*{properties}" >
+        </textarea>
+        <div style="position:absolute;left:120%;top:-120px">
+        <p>Example</p>
+        <pre class='mapping'>{"properties":{"eventType":{"type":"string"},"entityType":{"type":"string"},"entityId":{"type":"integer"},"targetEntityId":{"type":"integer"},"targetEntityType":{"type":"string"}}}</pre>
+        </div>
+        </div>
+ 
+
+
+    <!--  Submit button -->
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-success">Create</button>
+        </div>
+    </div>
+</form>
+				</div>
+	
+</div>
+
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   $('#newindex').change(function(){
+	 if(this.checked) {   
+         $("#selectindexdiv").toggle();
+         $('#newindexdiv').toggle();
+       }
+  
+    });
+	$( ".mapping" ).each(function( index ) {
+		  var obj=JSON.parse($( this ).text());
+		  $( this ).text(JSON.stringify(obj,null,4));
+		});
+});
+
+</script>
+
+</body>
+</html>

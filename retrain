@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec predictionio-container /bin/sh -c "cd /quickstartapp/MyRecommendation && pio train && pio deploy --ip 0.0.0.0&"

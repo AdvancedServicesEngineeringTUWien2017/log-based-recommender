@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Log-based e-commerce recommendation system</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"  />
+	<!-- Custom CSS -->
+<link th:href="@{/styles.css}" rel="stylesheet" type="text/css"  />
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		<a class="navbar-brand" href="/">Home</a>
+			<a class="navbar-brand" href="http://192.168.99.100:8060">Simulation service</a>
+			<a class="navbar-brand" href="neweventtype">Define new event type</a>
+			<a class="navbar-brand" href="newrecommenderevent">Insert new event</a>
+			<a class="navbar-brand" href="eventtypes">Get defined event types</a>
+			<a class="navbar-brand" href="getrecommendations">Get recommendations</a>
+			<a class="navbar-brand" href="http://192.168.99.100:5601">Kibana</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+	<h1>Log-based e-commerce recommendation system</h1>
+   <p>Insert new event</p>
+
+
+	<div class="tab-content clearfix" >
+		<div class="tab-pane active" id="only-log">
+          <form action="#"  method="POST"
+      th:action="@{/inserttorecommender}" th:object="${recommenderevent}" class="form-horizontal">
+
+ <div class="form-group" id="selectmappingdiv" >
+        <label for="mappinglist">Choose mapping</label>
+        <select class="form-control" id="mappinglist" th:field="*{mapping}">
+         <option th:each="m : ${mappings}" 
+          th:value="${m.key}" 
+          th:text="${m.key}"></option>
+         </select>
+        </div>
+
+   <div class="form-group" id="selectindexdiv">
+        <label for="eventtype">Event type</label>
+        <select class="form-control" id="eventtype" th:field="*{eventType}">
+         <option th:each="type : ${types}" 
+          th:value="${type}" 
+          th:text="${type}"></option>
+         </select>
+        </div>
+        
+        
+         <div class="form-group" >
+        <label for="entitytype">Entity type (e.g. user)</label>
+        <input class="form-control" id="entitytype" type="text" th:field="*{entityType}" />
+        </div>
+        
+           <div class="form-group" >
+        <label for="entityid">Entity ID</label>
+        <input class="form-control" id="entityid" type="text" th:field="*{entityId}" />
+        </div>
+        
+         <div class="form-group" >
+        <label for="targetentitytype">Target entity type (e.g. hotel,product)</label>
+        <input class="form-control" id="targetentitytype" type="text" th:field="*{targetEntityType}" />
+        </div>
+        
+        <div class="form-group" >
+        <label for="targetentityid">Target Entity ID</label>
+        <input class="form-control" id="targetentityid" type="text" th:field="*{targetEntityId}" />
+        </div>
+        
+        
+       <div class="form-group" style="position:relative" >
+        <label for="properties">Properties in JSON format:</label>
+        <textarea name="prop" class="form-control" id="properties" rows="10" cols="50" th:field="*{properties}" >
+        </textarea>
+        <div style="position:absolute;left:120%;top:-250px">
+        <p>Mapping properties</p>
+         <pre class="mapping" th:each="m : ${mappings}" 
+          th:text="${m.value}" th:id="${m.key}"></pre>
+     
+        </div>
+        </div>
+ 
+
+
+    <!--  Submit button -->
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-success">Insert</button>
+        </div>
+    </div>
+</form>
+				</div>
+		
+
+</div>
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   $('#newindex').change(function(){
+	 if(this.checked) {   
+         $("#selectindexdiv").toggle();
+         $('#newindexdiv').toggle();
+       }
+     
+    });
+   $( ".mapping" ).each(function( index ) {
+		  var obj=JSON.parse($( this ).text());
+		  $( this ).text(JSON.stringify(obj,null,4));
+		  if ($('#mappinglist').val()!=$(this).attr('id')) {
+			  $(this).hide();
+		  }
+	});
+   $('#mappinglist').on('change', function() {
+	   $( ".mapping" ).each(function( index ) {
+  		    $(this).hide();
+		});
+	   $("#"+this.value ).show();
+	 })
+});
+
+</script>
+
+</body>
+</html>

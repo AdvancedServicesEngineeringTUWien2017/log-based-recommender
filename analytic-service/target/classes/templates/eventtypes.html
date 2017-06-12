@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Log-based e-commerce recommendation system</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"  />
+	<!-- Custom CSS -->
+<link th:href="@{/styles.css}" rel="stylesheet" type="text/css"  />
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">Home</a>
+			<a class="navbar-brand" href="http://192.168.99.100:8060">Simulation service</a>
+			<a class="navbar-brand" href="neweventtype">Define new event type</a>
+			<a class="navbar-brand" href="newrecommenderevent">Insert new event</a>
+			<a class="navbar-brand" href="eventtypes">Get defined event types</a>
+			<a class="navbar-brand" href="getrecommendations">Get recommendations</a>
+			<a class="navbar-brand" href="http://192.168.99.100:5601">Kibana</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+	<h1>Log-based e-commerce recommendation system</h1>
+   <p>Defined event types</p>
+
+<div class="table-responsive-vertical shadow-z-1">
+				<!-- Table starts here -->
+				<table id="table" class="table table-hover table-mc-light-blue">
+					<thead>
+					<tr>
+						<th>Index</th>
+						<th>Mappings</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="instance  : ${res}">
+						<td th:text="${instance.key}"></td>
+						<td><pre class='mapping' th:text="${instance.value}"></pre></td>					
+					</tr>
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$( ".mapping" ).each(function( index ) {
+		  var obj=JSON.parse($( this ).text());
+		  $( this ).text(JSON.stringify(obj,null,4));
+		});
+});
+
+</script>
+
+</body>
+</html>
