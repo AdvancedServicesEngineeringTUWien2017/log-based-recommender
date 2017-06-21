@@ -1,6 +1,8 @@
 Log-based ecommerce recommendation system
 ===================
 
+The full documentation can be found in documentation/demo-documentation.pdf.
+
 The project can be run in docker. However, the docker machine needs to run on specific IP: http://192.168.99.100
 
 The system consists of 5 instances:
@@ -12,7 +14,7 @@ The system consists of 5 instances:
 
 First we need to create images for all the service.
 1. Open docker console.
-2. Make sure it runs on IP http://192.168.99.100 (if no, change it in the docker config): docker-machine ip 
+2. Make sure it runs on IP http://192.168.99.100 (if not, change it in the docker config): docker-machine ip 
 3. Go to analytic-service directory and run: mvn package docker:build
 4. Go to notification-service directory and run: mvn package docker:build
 5. Go to simulation-service directory and run: mvn package docker:build
@@ -23,7 +25,7 @@ Secondly we need to run all the services
 1. Go back to project root folder
 2. Run: docker-compose up
 3. Wait untill all services start (it might take few minutes)
-4. The services interface can be found at: http://192.168.99.100:8080
+4. The service interface can be found at: http://192.168.99.100:8080
 
 Using the service:
 - Before inserting any data, we need to create an index or mapping where the data will be stored.
